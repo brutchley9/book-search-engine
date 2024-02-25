@@ -57,6 +57,11 @@ const LoginForm = (props) => {
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
+  const [response, { error, data }] = useMutation(LOGIN_USER);
+
+
+
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
@@ -73,7 +78,7 @@ const LoginForm = (props) => {
     }
 
     try {
-      const [response, { error, data }] = useMutation(LOGIN_USER);
+      
 
       if (!response.ok) {
         throw new Error('something went wrong!');

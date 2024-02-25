@@ -43,7 +43,7 @@ const SignupForm = () => {
 
 
   
-  const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
+  /*const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
   const [addUser, { error, data }] = useMutation(ADD_USER);
   
   // set state for form validation
@@ -68,7 +68,48 @@ const SignupForm = () => {
 
     try {
       const { data } = await addUser({
-        variables: { ...formState },
+        variables: { ...userFormData },
+      });
+
+      Auth.login(data.addUser.token);
+    } catch (e) {
+      console.error(e);
+    }
+  };*/
+
+  const [userFormData, setUserFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+  });
+
+  const [addUser, { error, data }] = useMutation(ADD_USER);
+
+  const [validated] = useState(false);
+  // set state for alert
+  const [showAlert, setShowAlert] = useState(false);
+
+
+
+
+  // update state based on form input changes
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+
+    setUserFormData({
+      ...userFormData,
+      [name]: value,
+    });
+  };
+
+  // submit form
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    console.log(userFormData);
+
+    try {
+      const { data } = await addUser({
+        variables: { ...userFormData },
       });
 
       Auth.login(data.addUser.token);
@@ -76,6 +117,18 @@ const SignupForm = () => {
       console.error(e);
     }
   };
+
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <>
