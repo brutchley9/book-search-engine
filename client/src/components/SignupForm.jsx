@@ -1,12 +1,54 @@
 import { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import { createUser } from '../utils/API';
 import Auth from '../utils/auth';
+import { ADD_USER } from '../utils/mutations';
 
 const SignupForm = () => {
   // set initial form state
+
+  const [formState, setFormState] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+  const [addProfile, { error, data }] = useMutation(ADD_USER);
+
+  // update state based on form input changes
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
+
+  // submit form
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    console.log(formState);
+
+    try {
+      const { data } = await addProfile({
+        variables: { ...formState },
+      });
+
+      Auth.login(data.addProfile.token);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+
+
+
+  /*
   const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
+
+  
   // set state for form validation
   const [validated] = useState(false);
   // set state for alert
@@ -28,8 +70,8 @@ const SignupForm = () => {
     }
 
     try {
-      const response = await createUser(userFormData);
-
+      //const response = await createUser(userFormData);
+      const response = useMutation(ADD_USER);
       if (!response.ok) {
         throw new Error('something went wrong!');
       }
@@ -47,7 +89,7 @@ const SignupForm = () => {
       email: '',
       password: '',
     });
-  };
+  };*/
 
   return (
     <>

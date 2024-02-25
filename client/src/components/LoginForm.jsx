@@ -1,12 +1,53 @@
 // see SignupForm.js for comments
 import { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
+import { LOGIN_USER } from '../utils/mutations';
+import { Link } from 'react-router-dom';
 
 import { loginUser } from '../utils/API';
 import Auth from '../utils/auth';
 
-const LoginForm = () => {
-  const [userFormData, setUserFormData] = useState({ email: '', password: '' });
+const LoginForm = (props) => {
+
+  const [formState, setFormState] = useState({ email: '', password: '' });
+  const [login, { error, data }] = useMutation(LOGIN_USER);
+
+  // update state based on form input changes
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
+
+  // submit form
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    console.log(formState);
+    try {
+      const { data } = await login({
+        variables: { ...formState },
+      });
+
+      Auth.login(data.login.token);
+    } catch (e) {
+      console.error(e);
+    }
+
+    // clear form values
+    setFormState({
+      email: '',
+      password: '',
+    });
+  };
+
+
+
+
+
+  /*const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
@@ -26,7 +67,7 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await loginUser(userFormData);
+      const [response, { error, data }] = useMutation(LOGIN_USER);
 
       if (!response.ok) {
         throw new Error('something went wrong!');
@@ -45,7 +86,7 @@ const LoginForm = () => {
       email: '',
       password: '',
     });
-  };
+  };*/
 
   return (
     <>
