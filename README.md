@@ -10,7 +10,7 @@ Understanding the machiniations of the MERN stack in this age of web development
 
 ---
 
-Follow link --------------- to access this website!
+Follow link https://lit-beach-58313-447d9d61dd1f.herokuapp.com/ to access this website!
 
 Follow link https://github.com/brutchley9/book-search-engine/ to access GitHub repository for this website (including code).
 
